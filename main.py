@@ -26,26 +26,29 @@ def trackInfo(flacInDirectory):
     trackMetadata = []
     for file in flacInDirectory:
         skip = 0
-        sampleRate = int(os.popen("metaflac --show-sample-rate "+file).read())
-        if sampleRate == 44100:
+        sampleRate = os.popen("metaflac --show-sample-rate \""+file+"\"").read()
+        sampleRate = sampleRate.rstrip('\n')
+        print("sampleRate", sampleRate)
+        if sampleRate == "44100":
             skip = 286
-        elif sampleRate == 48000:
+        elif sampleRate == "48000":
             skip = 312
-        elif sampleRate == 96000:
+        elif sampleRate == "96000":
             skip = 624
-        elif sampleRate == 192000:
+        elif sampleRate == "192000":
             skip = 1248
-        md5sum = os.popen("metaflac --show-md5sum "+file).read()
+        md5sum = os.popen("metaflac --show-md5sum \""+file+"\"").read()
+        md5sum = md5sum.rstrip('\n')
         trackMetadata.append([file, sampleRate, skip, md5sum])
     print(trackMetadata)
     return trackMetadata
 
 def PCMsplice(trackMetadata):
     for track in trackMetadata:
-        os.system("flac -8 --skip="+str(track[2])+" -f "+str(track[0]))
-        os.system("metaflac --set-tag=BP=1 "+str(track[0]))
+        os.system("flac -8 --skip="+str(track[2])+" -f \""+str(track[0])+"\"")
+        os.system("metaflac --set-tag=BP=1 \""+str(track[0])+"\"")
         if track[1] != 0:
-            debugList.append("Sample rate: "+str(track[1]/1000)+"kHz, skipping "+str(track[2])+" samples")
+            debugList.append("Sample rate: "+str(track[1])+"Hz, skipping "+str(track[2])+" samples")
         else:
             debugList.append("Error: Skipping"+track[0])
     return
