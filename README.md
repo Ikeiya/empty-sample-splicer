@@ -1,4 +1,4 @@
-# empty-sample-splicer
+# Empty-sample-splicer
 
 When obtaining Hi-res FLAC files from Amazon Music in certain sources, the md5 of the obtained file is not identical with Hi-res FLAC files from other sources. This is a result of empty samples in the audio sample of the file, which must be removed for the file to be "bit-perfect".
 
@@ -8,7 +8,8 @@ However, there are a few quality of life issues with nptr's powershell script.
 1. Windows only, no linux support
 2. No logging file to verify samples are actually skipped
 
-To resolve these issues, I wrote empty-sample-splicer which addresses these issues:
+
+To resolve these issues, empty-sample-splicer was born which addresses these issues:
 1. Windows only -> Rewritten in python and compilable with any operating system
 2. Logging file with file name, sample rate, samples skipped and comparison of md5 before and after splicing
 
