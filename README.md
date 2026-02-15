@@ -1,6 +1,6 @@
 # Empty-sample-splicer
 
-When obtaining Hi-res FLAC files from Amazon Music with certain sources, the md5 of the obtained file is not identical with Hi-res FLAC files from other sources. This is a result of empty samples in the audio sample of the file, which must be removed for the file to be "bit-perfect".
+When obtaining Amazon Music's Hi-res FLAC files from certain sources, the md5 of the obtained file is not identical with Hi-res FLAC files from other sources. This is a result of empty samples in the audio sample of the file, which must be removed for the file to be "bit-perfect".
 
 This script is inspired by: https://nptr.cc/posts/2024-05/amazon-music-postprocess/
 
