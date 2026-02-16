@@ -54,6 +54,21 @@ def PCMsplice(trackMetadata):
     return
         
 
+def verify(debugList):
+    length = int(len(debugList)/3)
+    newDebugList = []
+    for i in range(length):
+        firstMD5 = debugList[i].find("md5")
+        firstMD5 = debugList[i][firstMD5+4:]
+        secondMD5 = debugList[i+(2*length)].find("md5")
+        secondMD5 = debugList[i+(2*length)][secondMD5+4:]
+        if firstMD5 == secondMD5:
+            newDebugList.append("Failed: "+debugList[i]+" updated md5-"+secondMD5)
+        else:
+            newDebugList.append("Success: "+debugList[i]+" updated md5-"+secondMD5)
+        newDebugList.append(debugList[i+length])
+    return newDebugList
+
 def main(debugList):
     flacInDirectory = read_file()
     trackMetadata = trackInfo(flacInDirectory)
@@ -63,9 +78,10 @@ def main(debugList):
     trackMetadata = trackInfo(flacInDirectory)
     for track in trackMetadata:
         debugList.append("Files after splice: "+"filename-"+str(track[0])+" sampleRate-"+str(track[1])+" skip-"+str(track[2])+" md5-"+str(track[3]))
+    debugList = verify(debugList)
     return debugList
 
-main(debugList)
+debugList = main(debugList)
 
 for item in debugList:
     logger.debug(item)
