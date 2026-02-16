@@ -9,9 +9,8 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S',
     level=logging.DEBUG
 )
-global logger
-logger = logging.getLogger("skip.log")
 
+logger = logging.getLogger("skip.log")
 debugList = []
 
 def read_file():
