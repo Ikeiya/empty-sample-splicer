@@ -27,7 +27,6 @@ def trackInfo(flacInDirectory):
         skip = 0
         sampleRate = os.popen("metaflac --show-sample-rate \""+file+"\"").read()
         sampleRate = sampleRate.rstrip('\n')
-        print("sampleRate", sampleRate)
         if sampleRate == "44100":
             skip = 286
         elif sampleRate == "48000":
@@ -39,15 +38,14 @@ def trackInfo(flacInDirectory):
         md5sum = os.popen("metaflac --show-md5sum \""+file+"\"").read()
         md5sum = md5sum.rstrip('\n')
         trackMetadata.append([file, sampleRate, skip, md5sum])
-    print(trackMetadata)
     return trackMetadata
 
 def PCMsplice(trackMetadata):
     for track in trackMetadata:
-        os.system("flac -8 --skip="+str(track[2])+" -f \""+str(track[0])+"\"")
-        os.system("metaflac --set-tag=BP=1 \""+str(track[0])+"\"")
+        os.popen("flac -8 --skip="+str(track[2])+" -f \""+str(track[0])+"\"").read()
+        os.popen("metaflac --set-tag=BP=1 \""+str(track[0])+"\"").read()
         if track[1] != 0:
-            debugList.append("Sample rate: "+str(track[1])+"Hz, skipping "+str(track[2])+" samples")
+            debugList.append("Sample rate: "+str(track[1])+"Hz, skipping "+str(track[2])+" samples"+"\n")
         else:
             debugList.append("Error: Skipping"+track[0])
     return
@@ -62,9 +60,9 @@ def verify(debugList):
         secondMD5 = debugList[i+(2*length)].find("md5")
         secondMD5 = debugList[i+(2*length)][secondMD5+4:]
         if firstMD5 == secondMD5:
-            newDebugList.append("Failed: "+debugList[i]+" updated md5-"+secondMD5)
+            newDebugList.append("Failed - "+debugList[i]+" updated md5-"+secondMD5)
         else:
-            newDebugList.append("Success: "+debugList[i]+" updated md5-"+secondMD5)
+            newDebugList.append("Success - "+debugList[i]+" updated md5-"+secondMD5)
         newDebugList.append(debugList[i+length])
     return newDebugList
 
